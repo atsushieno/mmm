@@ -1,13 +1,22 @@
-all: MGrammar.dll
+MGRAMMAR_DLL_SOURCES = MGrammar.cs MGrammar.Generated.cs
+M2CS_SOURCES = driver.cs
 
-MGrammar.dll : MGrammar.cs
-	smcs -debug -r:Irony.dll -t:library MGrammar.cs
+all: m2cs.exe
 
-MGrammar.cs : MGrammar.txt MGrammarGenerator.exe
-	mono --debug MGrammarGenerator.exe MGrammar.txt MGrammar.cs
+m2cs.exe : MGrammar.dll $(M2CS_SOURCES)
+	gmcs -debug -r:Irony.dll -r:MGrammar.dll $(M2CS_SOURCES) -out:m2cs.exe
+
+MGrammar.dll : $(MGRAMMAR_DLL_SOURCES)
+	gmcs -debug -r:Irony.dll -t:library $(MGRAMMAR_DLL_SOURCES) -out:MGrammar.dll
+
+MGrammar.Generated.cs : MGrammar.txt MGrammarGenerator.exe
+	mono --debug MGrammarGenerator.exe MGrammar.txt MGrammar.Generated.cs
 
 MGrammarGenerator.exe : MGrammarGenerator.cs
 	gmcs -debug MGrammarGenerator.cs
+
+clean:
+	rm MGrammar.dll MGrammarGenerator.exe MGrammar.Generated.cs
 
 dist:
 	mkdir -p mmm

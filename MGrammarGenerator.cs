@@ -47,73 +47,7 @@ namespace MCompiler
 		string mid = @"
 		}
 
-		public StringLiteral L (string s)
-		{
-			return new StringLiteral (s);
-		}
-
-		public NonTerminal Opt (BnfTerm elem)
-		{
-			return new NonTerminal (elem.Name + "".opt"") { Rule = Empty + elem };
-		}
-
-		public NonTerminal NoneOf (BnfTerm term)
-		{
-			// FIXME: can we handle them?
-			throw new NotImplementedException ();
-		}
-
-		BnfExpression GetSignToken ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		BnfExpression GetDateDaysToken ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		BnfExpression GetDateMonthsToken ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		BnfExpression GetNormalCharacterToken ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		BnfExpression GetLetterToken ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		BnfExpression GetDecimalDigitToken ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		BnfExpression GetHexDigitToken ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		BnfExpression GetTimeHoursToken ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		BnfExpression StringContent (char sep, bool verbatim)
-		{
-			throw new NotImplementedException ();
-		}
-
-		// some exceptional rules for literals that starts with an uppercase letter.
-		StringLiteral T { get { return new StringLiteral (""T""); } }
-		StringLiteral Z { get { return new StringLiteral (""Z""); } }
-		StringLiteral E { get { return new StringLiteral (""E""); } }
-
-		// ---- Non-terminals -----
+		// ---- non-terminals ----
 ";
 
 		string tail = @"
@@ -220,6 +154,12 @@ namespace MCompiler
 
 		void ProcessRuleElement (string s)
 		{
+			int rangeStart = s.Length >= 4 ? s.IndexOf ("..", 1, s.Length - 2) : - 1;
+			if (rangeStart > 0) {
+				w.Write ("CharacterRange (\"{0}\", \"{1}\")", s.Substring (0, rangeStart), s.Substring (rangeStart + 2));
+				return;
+			}
+
 			bool opt = s.EndsWith (".opt", StringComparison.Ordinal);
 			if (opt) {
 				s = s.Substring (0, s.Length - 4);

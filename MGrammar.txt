@@ -88,9 +88,9 @@ IdentifierVerbatimEscape:
 	\\ 
 	\] 
 Letter: 
-	one of GetLetterToken() // a..z  A..Z 
+	one of a..z  A..Z 
 DecimalDigit: 
-	one of GetDecimalDigitToken() .. 0..9 
+	one of 0..9 
 DecimalDigits: 
 	DecimalDigit 
 	DecimalDigits  DecimalDigit 
