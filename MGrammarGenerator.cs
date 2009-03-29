@@ -45,6 +45,7 @@ namespace MCompiler
 ";
 
 		string mid = @"
+			this.Root = CompilationUnit;
 		}
 
 		// ---- non-terminals ----
@@ -134,11 +135,20 @@ namespace MCompiler
 					}
 				} else if (s.StartsWith ("none of", StringComparison.Ordinal)) {
 					string [] tokens = s.Substring (7).Split (sep, StringSplitOptions.RemoveEmptyEntries);
-					w.Write ("NoneOf (");
+					w.Write ("Regex (");
 					for (int i = 0; i < tokens.Length; i++) {
 						if (i > 0)
-							w.Write (" | ");
-						ProcessRuleElement (tokens [i]);
+							w.Write (", ");
+						string t = tokens [i];
+						if (t == "NewLineCharacter") {
+							w.Write ("'\\r', '\\n', '\\t', '\\u0085', '\\u2028', '\\u2029'");
+						} else if (t.Length == 1) {
+							w.Write ("'");
+							w.Write (t == "'" ? "\\'" : t == "\\" ? "\\\\" : t);
+							w.Write ("'");
+						}
+						else
+							throw new NotImplementedException (t);
 					}
 					w.Write (")");
 				} else {

@@ -1,9 +1,6 @@
 
 #Begin lexer rules
 
-NormalCharacter: // LAMESPEC: it is referenced but not defined.
-	one of GetNormalCharacterToken()
-
 // 2.3
 Input: 
 	InputSection.opt 
@@ -417,15 +414,6 @@ TypeReference:
 TypeReferences: 
 	TypeReference   
 	TypeReferences  ,  TypeReference   
-Pattern: // LAMESPEC: missing colon
-	PatternElement 
-	Pattern PatternElement 
-PatternElement: // LAMESPEC: missing colon
-	NormalCharacter 
-	- 
-	% 
-	[  NormalCharacter - NormalCharacter ] 
-	[^ NormalCharacter - NormalCharacter ] 
 EntityTypeExpression: 
 	{  EntityMemberDeclarations  }   
 EntityMemberDeclarations: 
