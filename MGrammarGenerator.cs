@@ -46,6 +46,7 @@ namespace MCompiler
 
 		string mid = @"
 			this.Root = CompilationUnit;
+			AdjustGrammar ();
 		}
 
 		// ---- non-terminals ----
@@ -167,6 +168,10 @@ namespace MCompiler
 			int rangeStart = s.Length >= 4 ? s.IndexOf ("..", 1, s.Length - 2) : - 1;
 			if (rangeStart > 0) {
 				w.Write ("CharacterRange (\"{0}\", \"{1}\")", s.Substring (0, rangeStart), s.Substring (rangeStart + 2));
+				return;
+			}
+			if (s.StartsWith ("special:", StringComparison.Ordinal)) {
+				w.Write (s.Substring (8).Trim ());
 				return;
 			}
 

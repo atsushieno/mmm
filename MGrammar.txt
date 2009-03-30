@@ -2,23 +2,23 @@
 #Begin lexer rules
 
 // 2.3
-Input: 
-	InputSection.opt 
-InputSection: 
-	InputSectionPart 
-	InputSection  InputSectionPart 
-InputSectionPart: 
-	InputElements.opt  NewLine 
-InputElements: 
-	InputElement 
-	InputElements InputElement 
-InputElement: 
-	Whitespace 
+//Input: 
+//	InputSection.opt 
+//InputSection: 
+//	InputSectionPart 
+//	InputSection  InputSectionPart 
+//InputSectionPart: 
+//	InputElements.opt  NewLine 
+//InputElements: 
+//	InputElement 
+//	InputElements InputElement 
+//InputElement: 
+//	Whitespace 
 //	Comment 
-	Token 
-NewLine: 
-	NewLineCharacter 
-	U+000D  U+000A 
+//	Token 
+//NewLine: 
+//	NewLineCharacter 
+//	U+000D  U+000A 
 NewLineCharacter: 
 	U+000A  // Line Feed 
 	U+000D  // Carriage Return 
@@ -55,13 +55,14 @@ WhitespaceCharacters:
 	WhitespaceCharacters  WhitespaceCharacter 
 
 // 2.4
-Token: 
-	Identifier 
-	Keyword 
-	Literal 
-	OperatorOrPunctuator 
+//Token: 
+//	Identifier 
+//	Keyword 
+//	Literal 
+//	OperatorOrPunctuator 
 Identifier: 
-	IdentifierBegin  IdentifierCharacters.opt 
+//	IdentifierBegin  IdentifierCharacters.opt 
+	special:IdentifierRule()
 	IdentifierVerbatim 
 IdentifierBegin: 
 	_ 
@@ -85,10 +86,10 @@ IdentifierVerbatimEscape:
 	\\ 
 	\] 
 Letter: 
-	one of a..z  A..Z 
+	one of a..z A..Z
 DecimalDigit: 
-	one of 0..9 
-DecimalDigits: 
+	one of 0 1 2 3 4 5 6 7 8 9 
+DecimalDigits:
 	DecimalDigit 
 	DecimalDigits  DecimalDigit 
 Keyword: 
@@ -232,9 +233,10 @@ CharacterEscape:
 	CharacterEscapeSimple 
 	CharacterEscapeUnicode 
 CharacterEscapeSimple: 
-	\  CharacterEscapeSimpleCharacter 
-CharacterEscapeSimpleCharacter:
-	one of '  "  \  0  a  b  f  n  r  t  v 
+	one of \' \" \\ \0 \a \b \f \n \r \t \v
+//	\  CharacterEscapeSimpleCharacter 
+//CharacterEscapeSimpleCharacter:
+//	one of '  "  \  0  a  b  f  n  r  t  v 
 CharacterEscapeUnicode: 
 	\u  HexDigit  HexDigit  HexDigit  HexDigit 
 	\U  HexDigit  HexDigit  HexDigit  HexDigit HexDigit  HexDigit  HexDigit  HexDigit 
@@ -254,8 +256,8 @@ GuidLiteral:
 	#[ X X X X X X X X - X X X X - X X X X - X X X X - X X X X X X X X X X X X ] 
 X:  
 	HexDigit 
-OperatorOrPunctuator: 
-	one of  [  ]  (  )  .  ,  :  ;  ?  =  <  >  <=  >=  ==  !=  +  -  *  /  %  &  |  !  &&  ||  ~   <<  >> { } # .. @ ' " ?? 
+//OperatorOrPunctuator: 
+//	one of  [  ]  (  )  .  ,  :  ;  ?  =  <  >  <=  >=  ==  !=  +  -  *  /  %  &  |  !  &&  ||  ~   <<  >> { } # .. @ ' " ?? 
 
 #Begin tokenizer rules
 

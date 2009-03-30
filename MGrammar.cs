@@ -11,9 +11,23 @@ namespace MCompiler
 {
 	public partial class MGrammar : Grammar
 	{
-		public StringLiteral L (string s)
+		void AdjustGrammar ()
 		{
-			return new StringLiteral (s);
+		}
+
+		public BnfExpression L (string s)
+		{
+			return Symbol (s, s);
+		}
+
+		public NumberLiteral DecimalDigitsRule ()
+		{
+			return new NumberLiteral ("DecimalDigits", NumberFlags.IntOnly);
+		}
+
+		public IdentifierTerminal IdentifierRule ()
+		{
+			return new IdentifierTerminal ("Identifier_raw", "_$", "_");
 		}
 
 		public NonTerminal Opt (BnfTerm elem)
@@ -79,8 +93,8 @@ namespace MCompiler
 */
 
 		// some exceptional rules for literals that starts with an uppercase letter.
-		StringLiteral T { get { return new StringLiteral ("T"); } }
-		StringLiteral Z { get { return new StringLiteral ("Z"); } }
-		StringLiteral E { get { return new StringLiteral ("E"); } }
+		BnfExpression T { get { return Symbol ("T"); } }
+		BnfExpression Z { get { return Symbol ("Z"); } }
+		BnfExpression E { get { return Symbol ("E"); } }
 	}
 }
