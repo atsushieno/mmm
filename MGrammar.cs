@@ -20,6 +20,11 @@ namespace MCompiler
 			return Symbol (s, s);
 		}
 
+		public RegexBasedTerminal Regex (string name, string regex)
+		{
+			return new RegexBasedTerminal (name, regex);
+		}
+
 		public NumberLiteral DecimalDigitsRule ()
 		{
 			return new NumberLiteral ("DecimalDigits", NumberFlags.IntOnly);
@@ -35,7 +40,7 @@ namespace MCompiler
 			return new NonTerminal (elem.Name + ".opt") { Rule = Empty + elem };
 		}
 
-		internal RegexBasedTerminal Regex (params char [] negativeMatches)
+		internal RegexBasedTerminal NoneOf (params char [] negativeMatches)
 		{
 			string p = "[^";
 			foreach (char c in negativeMatches)

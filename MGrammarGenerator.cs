@@ -136,7 +136,7 @@ namespace MCompiler
 					}
 				} else if (s.StartsWith ("none of", StringComparison.Ordinal)) {
 					string [] tokens = s.Substring (7).Split (sep, StringSplitOptions.RemoveEmptyEntries);
-					w.Write ("Regex (");
+					w.Write ("NoneOf (");
 					for (int i = 0; i < tokens.Length; i++) {
 						if (i > 0)
 							w.Write (", ");

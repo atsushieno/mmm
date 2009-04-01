@@ -55,15 +55,16 @@ WhitespaceCharacters:
 	WhitespaceCharacters  WhitespaceCharacter 
 
 // 2.4
-//Token: 
-//	Identifier 
-//	Keyword 
-//	Literal 
-//	OperatorOrPunctuator 
+Token: 
+	Identifier 
+	Keyword 
+	Literal 
+	OperatorOrPunctuator 
 Identifier: 
 //	IdentifierBegin  IdentifierCharacters.opt 
 	special:IdentifierRule()
-	IdentifierVerbatim 
+//	IdentifierVerbatim 
+	special:Regex("IdentifierVerbatim_raw",@"@\x5B([^\x5D]|\\|\\x5D)+\x5D")
 IdentifierBegin: 
 	_ 
 	Letter 
@@ -79,7 +80,7 @@ IdentifierVerbatim:
 IdentifierVerbatimCharacter: 
 	none of ] 
 	IdentifierVerbatimEscape 
-	IdentifierVerbatimCharacters: 
+IdentifierVerbatimCharacters: 
 	IdentifierVerbatimCharacter 
 	IdentifierVerbatimCharacters  IdentifierVerbatimCharacter 
 IdentifierVerbatimEscape: 
@@ -131,8 +132,9 @@ Literal:
 	DecimalLiteral 
 	IntegerLiteral 
 	ScientificLiteral 
-	DateTimeLiteral 
-	DateTimeOffsetLiteral 
+// FIXME: enable them
+//	DateTimeLiteral 
+//	DateTimeOffsetLiteral 
 	TimeLiteral 
 	TextLiteral 
 	BinaryLiteral  
@@ -210,7 +212,8 @@ SingleQuotedVerbatimCharacter:
 	none of ' 
 	SingleQuotedVerbatimCharacterEscape 
 SingleQuotedVerbatimCharacterEscape: 
-	" " 
+//	" " // LAMESPEC: should be ''
+	''
  
 DoubleQuotedCharacter:  
 	DoubleQuotedCharacterSimple 
@@ -227,7 +230,7 @@ DoubleQuotedVerbatimCharacters:
 	DoubleQuotedVerbatimCharacter 
 	DoubleQuotedVerbatimCharacters  DoubleQuotedVerbatimCharacter 
 DoubleQuotedVerbatimCharacterEscape: 
-	" " 
+	"" // " " 
  
 CharacterEscape: 
 	CharacterEscapeSimple 
@@ -246,7 +249,7 @@ BinaryLiteral:
 	0x  HexDigits.opt 
 	0X  HexDigits.opt 
 HexDigit:
-	one of GetHexDigitToken() // 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  A  B  C  M  E  F 
+	one of GetHexDigitToken() // 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  A  B  C  D  E  F 
 HexDigits: 
 	HexDigit  HexDigit 
 	HexDigits  HexDigit HexDigit 
@@ -256,8 +259,8 @@ GuidLiteral:
 	#[ X X X X X X X X - X X X X - X X X X - X X X X - X X X X X X X X X X X X ] 
 X:  
 	HexDigit 
-//OperatorOrPunctuator: 
-//	one of  [  ]  (  )  .  ,  :  ;  ?  =  <  >  <=  >=  ==  !=  +  -  *  /  %  &  |  !  &&  ||  ~   <<  >> { } # .. @ ' " ?? 
+OperatorOrPunctuator: 
+	one of  [  ]  (  )  .  ,  :  ;  ?  =  <  >  <=  >=  ==  !=  +  -  *  /  %  &  |  !  &&  ||  ~   <<  >> { } # .. @ ' " ?? 
 
 #Begin tokenizer rules
 
@@ -450,7 +453,8 @@ DottedIdentifiers:
 	DottedIdentifiers , DottedIdentifier 
 DottedIdentifier:  // LAMESPEC: It is mistyped as DottedIdentifer.
 	IdentifierPath 
-	.  IdentifierPath 
+// FIXME: I doubt that this specification is wrong. Actually this causes a lot of conflict. Disabling it for now.
+//	.  IdentifierPath 
 IdentifierPath: 
 	Identifier 
 	IdentifierPath  .  Identifier 
